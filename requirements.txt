@@ -5,3 +5,4 @@ Pillow
 pydantic
 google-genai
 gunicorn
+pyodbc
