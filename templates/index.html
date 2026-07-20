@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quản Lý Học Bạ</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            padding: 25px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+        }
+
+        .upload-section {
+            background: #e9ecef;
+            padding: 20px;
+            border-radius: 6px;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            margin: 5px;
+        }
+
+        .btn-primary {
+            background-color: #007bff;
+            color: white;
+        }
+
+        .btn-secondary {
+            background-color: #6c757d;
+            color: white;
+        }
+
+        .btn-success {
+            background-color: #28a745;
+            color: white;
+            width: 100%;
+            padding: 12px;
+            margin-top: 15px;
+        }
+
+        .btn-danger {
+            background-color: #dc3545;
+            color: white;
+        }
+
+            .btn-danger:hover {
+                background-color: #bd2130;
+            }
+
+        .btn:disabled {
+            background-color: #ccc;
+            cursor: not-allowed;
+        }
+
+        /* Tiêu đề form và cụm nút góc phải */
+        .form-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #e9ecef;
+            padding-bottom: 10px;
+            margin-top: 20px;
+        }
+
+            .form-header h3 {
+                margin: 0;
+            }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-top: 15px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+            .form-group.full-width {
+                grid-column: span 2;
+            }
+
+        label {
+            font-weight: bold;
+            margin-bottom: 5px;
+            font-size: 14px;
+        }
+
+        input, textarea {
+            padding: 8px;
+            border: 1px solid #ced4da;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        #loading {
+            display: none;
+            color: #007bff;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>📚 Quản Lý Học Bạ</h1>
+        <p style="text-align: center; color: #666;">Chụp ảnh học bạ, AI tự động trích xuất và lưu thông tin</p>
+
+        <div class="upload-section">
+            <label style="display: block; margin-bottom: 10px;">1. CHỌN ẢNH HỌC BẠ</label>
+            <input type="file" id="fileInput" accept="image/*">
+            <br><br>
+            <button class="btn btn-primary" id="scanBtn" onclick="scanImage()" disabled>⚡ Quét & Trích xuất</button>
+            <button class="btn btn-secondary" onclick="resetForm()">🔄 Làm mới</button>
+            <div id="loading">⏳ Đang quét ảnh bằng Gemini AI, vui lòng đợi...</div>
+        </div>
+
+        <form id="hocBaForm">
+            <div class="form-header">
+                <h3>Thông tin trích xuất:</h3>
+                <button type="button" class="btn btn-danger" onclick="window.location.href='http://127.0.0.1:5000/TRANG-AI.aspx'">🚪 Thoát bản ghi</button>
+            </div>
+
+            <div class="grid-container">
+                <div class="form-group">
+                    <label>Họ và Tên:</label>
+                    <input type="text" id="ho_ten">
+                </div>
+                <div class="form-group">
+                    <label>Ngày tháng năm sinh:</label>
+                    <input type="text" id="ngay_thang_nam_sinh">
+                </div>
+                <div class="form-group">
+                    <label>Nơi sinh:</label>
+                    <input type="text" id="noi_sinh">
+                </div>
+                <div class="form-group">
+                    <label>Quê quán:</label>
+                    <input type="text" id="que_quan">
+                </div>
+                <div class="form-group full-width">
+                    <label>Nơi ở hiện nay:</label>
+                    <input type="text" id="noi_o_hien_nay">
+                </div>
+                <div class="form-group">
+                    <label>Họ và tên cha:</label>
+                    <input type="text" id="ho_va_ten_cha">
+                </div>
+                <div class="form-group">
+                    <label>Họ và tên mẹ:</label>
+                    <input type="text" id="ho_va_ten_me">
+                </div>
+                <div class="form-group">
+                    <label>Lớp:</label>
+                    <input type="text" id="lop">
+                </div>
+                <div class="form-group">
+                    <label>Trường:</label>
+                    <input type="text" id="truong">
+                </div>
+                <div class="form-group">
+                    <label>Khóa học:</label>
+                    <input type="text" id="Khoa_hoc">
+                </div>
+                <div class="form-group"><label>Xếp loại:</label><input type="text" id="xep_loai"></div>
+                <div class="form-group"><label>Hạnh kiểm:</label><input type="text" id="hanh_kiem"></div>
+                <div class="form-group full-width"><label>Ghi chú:</label><input type="text" id="ghi_chu"></div>
+                <div class="form-group full-width">
+                    <label>Toàn bộ nội dung đầy đủ:</label>
+                    <textarea id="noi_dung_day_du"></textarea>
+                </div>
+            </div>
+
+            <button type="button" class="btn btn-success" id="saveBtn" onclick="saveData()" disabled>💾 Lưu học bạ vào Database</button>
+        </form>
+    </div>
+
+    <script>
+        const fileInput = document.getElementById('fileInput');
+        const scanBtn = document.getElementById('scanBtn');
+        const saveBtn = document.getElementById('saveBtn');
+        const loading = document.getElementById('loading');
+
+        // Lắng nghe: Khi người dùng chọn file thì mới mở khóa nút Quét
+        fileInput.addEventListener('change', function () {
+            if (this.files.length > 0) {
+                scanBtn.disabled = false;
+            } else {
+                scanBtn.disabled = true;
+            }
+        });
+
+        // Hàm gọi API quét ảnh gửi lên Backend Flask
+        async function scanImage() {
+            const file = fileInput.files[0];
+            if (!file) return alert("Vui lòng chọn một file ảnh trước!");
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            loading.style.display = 'block';
+            scanBtn.disabled = true;
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/scan', {
+                    method: 'POST',
+                    body: formData
+                });
+                const result = await response.json();
+
+                if (response.ok) {
+                    const data = result.data;
+
+                    document.getElementById('ho_ten').value = data.ho_ten || '';
+                    document.getElementById('ngay_thang_nam_sinh').value = data.ngay_thang_nam_sinh || '';
+                    document.getElementById('lop').value = data.lop || '';
+                    document.getElementById('truong').value = data.truong || '';
+                    document.getElementById('Khoa_hoc').value = data.Khoa_hoc || '';
+                    document.getElementById('xep_loai').value = data.xep_loai || '';
+                    document.getElementById('hanh_kiem').value = data.hanh_kiem || '';
+                    document.getElementById('ghi_chu').value = data.ghi_chu || '';
+                    document.getElementById('noi_dung_day_du').value = data.noi_dung_day_du || '';
+                    document.getElementById('noi_sinh').value = data.noi_sinh || '';
+                    document.getElementById('que_quan').value = data.que_quan || '';
+                    document.getElementById('noi_o_hien_nay').value = data.noi_o_hien_nay || '';
+                    document.getElementById('ho_va_ten_cha').value = data.ho_va_ten_cha || '';
+                    document.getElementById('ho_va_ten_me').value = data.ho_va_ten_me || '';
+
+                    saveBtn.disabled = false;
+                    alert("Đã trích xuất dữ liệu xong!");
+                } else {
+                    alert("Lỗi: " + (result.error || "Không thể quét ảnh"));
+                }
+            } catch (error) {
+                console.error(error);
+                alert("Có lỗi kết nối xảy ra đến Server backend!");
+            } finally {
+                loading.style.display = 'none';
+                scanBtn.disabled = false;
+            }
+        }
+
+        // Hàm lưu dữ liệu vào Database
+        async function saveData() {
+            const payload = {
+                ho_ten: document.getElementById('ho_ten').value,
+                lop: document.getElementById('lop').value,
+                ngay_thang_nam_sinh: document.getElementById('ngay_thang_nam_sinh').value,
+                truong: document.getElementById('truong').value,
+                Khoa_hoc: document.getElementById('Khoa_hoc').value,
+                xep_loai: document.getElementById('xep_loai').value,
+                hanh_kiem: document.getElementById('hanh_kiem').value,
+                ghi_chu: document.getElementById('ghi_chu').value,
+                noi_dung_day_du: document.getElementById('noi_dung_day_du').value,
+                noi_sinh: document.getElementById('noi_sinh').value,
+                que_quan: document.getElementById('que_quan').value,
+                noi_o_hien_nay: document.getElementById('noi_o_hien_nay').value,
+                ho_va_ten_cha: document.getElementById('ho_va_ten_cha').value,
+                ho_va_ten_me: document.getElementById('ho_va_ten_me').value
+            };
+
+            try {
+                const response = await fetch('http://127.0.0.1:5000/save', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    alert(result.message);
+                } else {
+                    alert("Không thể lưu: " + result.error);
+                }
+            } catch (error) {
+                alert("Lỗi hệ thống khi lưu!");
+            }
+        }
+
+        // Hàm reset xóa sạch dữ liệu trên form
+        function resetForm() {
+            document.getElementById('hocBaForm').reset();
+            fileInput.value = "";
+            scanBtn.disabled = true;
+            saveBtn.disabled = true;
+        }
+
+        // Hàm xử lý nút Thoát
+        function exitPage() {
+            if (confirm("Bạn có chắc chắn muốn thoát khỏi trang này? Mọi dữ liệu chưa lưu sẽ bị mất.")) {
+                window.location.href = "/"; // Thay bằng đường dẫn trang chủ/dashboard của bạn
+            }
+        }
+    </script>
+</body>
+</html>
