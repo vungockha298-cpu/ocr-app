@@ -115,12 +115,11 @@ def scan():
         """
 
         response = client.models.generate_content(
-        model='gemini-1.5-flash',
-       contents=[prompt, img],
-       config={
-        'response_mime_type': 'application/json',
-        'response_schema': HocBaData,
-   
+            model='gemini-1.5-flash-latest',
+            contents=[prompt, img],
+            config={
+                'response_mime_type': 'application/json',
+                'response_schema': HocBaData,
             },
         )
 
