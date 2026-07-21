@@ -101,7 +101,7 @@ def scan():
     if not allowed_file(file.filename):
         return jsonify({'error': 'Dinh dang khong ho tro'}), 400
 
-    try:
+  try:
         img_bytes = file.read()
         img = PIL.Image.open(io.BytesIO(img_bytes))
 
@@ -112,8 +112,8 @@ def scan():
         Trường 'noi_dung_day_du' phải chứa toàn bộ khối văn bản thô đọc được trên ảnh.
         """
 
-        # Sử dụng model gemini-1.5-flash
-       model = genai.GenerativeModel('gemini-1.5-flash-002')
+        # Căn lề chuẩn xác
+        model = genai.GenerativeModel('gemini-1.5-flash-002')
         response = model.generate_content(
             [prompt, img],
             generation_config=genai.GenerationConfig(
