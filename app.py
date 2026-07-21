@@ -113,13 +113,13 @@ def scan():
         """
 
         # Sử dụng model gemini-1.5-flash
-        response = client.models.generate_content(
-            model='gemini-1.5-flash-002',
-            contents=[prompt, img],
-            config={
-                'response_mime_type': 'application/json',
-                'response_schema': HocBaData,
-            },
+       model = genai.GenerativeModel('gemini-1.5-flash-002')
+        response = model.generate_content(
+            [prompt, img],
+            generation_config=genai.GenerationConfig(
+                response_mime_type="application/json",
+                response_schema=HocBaData,
+            )
         )
 
         data = json.loads(response.text)
