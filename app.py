@@ -26,9 +26,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # =========================
-# GEMINI API CLIENT INITIALIZATIONx
+# GEMINI API CLIENT INITIALIZATION
 # =========================
-client = genai.Client()
+# Ép Client dùng API v1 để tránh lỗi 404 NOT_FOUND trên v1beta
+client = genai.Client(http_options={'api_version': 'v1'})
 
 
 # =========================
@@ -113,7 +114,7 @@ def scan():
         """
 
         response = client.models.generate_content(
-            model='gemini-1.5-flash-002',
+            model='gemini-1.5-flash',
             contents=[prompt, img],
             config={
                 'response_mime_type': 'application/json',
