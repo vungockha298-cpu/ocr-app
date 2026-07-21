@@ -115,7 +115,7 @@ def scan():
         """
 
         # Đổi quay lại gemini-2.0-flash
-        model = genai.GenerativeModel('gemini-2.0-flash')
+       model = genai.GenerativeModel('gemini-1.5-flash')
         response = model.generate_content(
             [prompt, img],
             generation_config=genai.GenerationConfig(
