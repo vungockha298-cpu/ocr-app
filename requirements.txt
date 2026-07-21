@@ -6,3 +6,4 @@ pydantic
 google-generativeai
 gunicorn
 pyodbc
+
