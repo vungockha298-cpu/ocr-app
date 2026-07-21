@@ -114,8 +114,8 @@ def scan():
         Trường 'noi_dung_day_du' phải chứa toàn bộ khối văn bản thô đọc được trên ảnh.
         """
 
-        # Sử dụng model gemini-1.5-flash ổn định, không lo bóp Quota hay lỗi 404
-        model = genai.GenerativeModel('gemini-1.5-flash')
+        # Đổi thành gemini-1.5-flash-002
+        model = genai.GenerativeModel('gemini-1.5-flash-002')
         response = model.generate_content(
             [prompt, img],
             generation_config=genai.GenerationConfig(
@@ -130,7 +130,6 @@ def scan():
 
     except Exception as e:
         return jsonify({'success': False, 'error': f'Loi Gemini API: {str(e)}'}), 500
-
 
 @app.route('/save', methods=['POST'])
 def save():
