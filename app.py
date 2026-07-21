@@ -94,16 +94,16 @@ def index():
 
 @app.route('/scan', methods=['POST'])
 def scan():
-  file = request.files.get('file') or request.files.get('image')
+    file = request.files.get('file') or request.files.get('image')
 
-  if not file:
-    return jsonify({'error': 'Khong co anh'}), 400
-  if file.filename == '':
-    return jsonify({'error': 'Ten file rong'}), 400
-  if not allowed_file(file.filename):
-    return jsonify({'error': 'Dinh dang khong ho tro'}), 400
+    if not file:
+        return jsonify({'error': 'Khong co anh'}), 400
+    if file.filename == '':
+        return jsonify({'error': 'Ten file rong'}), 400
+    if not allowed_file(file.filename):
+        return jsonify({'error': 'Dinh dang khong ho tro'}), 400
 
- try:
+    try:
         img_bytes = file.read()
         img = PIL.Image.open(io.BytesIO(img_bytes))
 
@@ -114,7 +114,6 @@ def scan():
         Trường 'noi_dung_day_du' phải chứa toàn bộ khối văn bản thô đọc được trên ảnh.
         """
 
-        # Thêm 4 khoảng trắng đằng trước dòng dưới này:
         response = client.models.generate_content(
             model='gemini-2.0-flash',
             contents=[prompt, img],
@@ -128,8 +127,8 @@ def scan():
 
         return jsonify({'success': True, 'data': data})
 
-  except Exception as e:
-    return jsonify({'success': False, 'error': f'Loi Gemini API: {str(e)}'}), 500
+    except Exception as e:
+        return jsonify({'success': False, 'error': f'Loi Gemini API: {str(e)}'}), 500
 
 
 @app.route('/save', methods=['POST'])
