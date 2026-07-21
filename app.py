@@ -29,8 +29,7 @@ db = SQLAlchemy(app)
 # GEMINI API CLIENT INITIALIZATION
 # =========================
 # Ép Client dùng API v1 để tránh lỗi 404 NOT_FOUND trên v1beta
-client = genai.Client(http_options={'api_version': 'v1'})
-
+client = genai.Client()
 
 # =========================
 # DATABASE MODEL
@@ -113,14 +112,14 @@ def scan():
         Trường 'noi_dung_day_du' phải chứa toàn bộ khối văn bản thô đọc được trên ảnh.
         """
 
-        response = client.models.generate_content(
-            model='gemini-1.5-flash',
-            contents=[prompt, img],
-            config={
-                'response_mime_type': 'application/json',
-                'response_schema': HocBaData,
-            },
-        )
+       response = client.models.generate_content(
+    model='gemini-2.5-flash', # Hoặc 'gemini-2.0-flash'
+    contents=[prompt, img],
+    config={
+        'response_mime_type': 'application/json',
+        'response_schema': HocBaData,
+    },
+)
 
         data = json.loads(response.text)
 
