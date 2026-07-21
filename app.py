@@ -30,7 +30,7 @@ db = SQLAlchemy(app)
 # GEMINI API CLIENT INITIALIZATION
 # =========================
 # SDK sẽ TỰ ĐỘNG đọc biến môi trường GEMINI_API_KEY mà bạn vừa set trên Render
-client = genai.Client()
+client = genai.Client(http_options={'api_version': 'v1'})
 
 
 # =========================
@@ -115,7 +115,7 @@ def scan():
         """
 
         response = client.models.generate_content(
-            model='gemini-1.5-flash-latest',
+            model='gemini-1.5-flash',
             contents=[prompt, img],
             config={
                 'response_mime_type': 'application/json',
