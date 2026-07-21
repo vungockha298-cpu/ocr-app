@@ -116,12 +116,12 @@ def scan():
 
     # Gọi API Gemini với tên model chuẩn và client đọc từ GEMINI_API_KEY
     response = client.models.generate_content(
-        model='gemini-1.5-flash',
-        contents=[prompt, img],
-        config={
-            'response_mime_type': 'application/json',
-            'response_schema': HocBaData,
-        },
+    model='models/gemini-1.5-flash',
+    contents=[prompt, img],
+    config={
+        'response_mime_type': 'application/json',
+        'response_schema': HocBaData,
+    },
     )
 
     data = json.loads(response.text)
