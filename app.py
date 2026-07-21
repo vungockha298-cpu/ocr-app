@@ -28,8 +28,10 @@ db = SQLAlchemy(app)
 # =========================
 # GEMINI API CLIENT INITIALIZATION
 # =========================
-genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
+from google import genai
 
+# Khai báo biến client chuẩn cho thư viện google-genai
+client = genai.Client()
 
 # =========================
 # DATABASE MODEL
@@ -112,13 +114,13 @@ def scan():
         Trường 'noi_dung_day_du' phải chứa toàn bộ khối văn bản thô đọc được trên ảnh.
         """
 
-        model = genai.GenerativeModel('gemini-1.5-flash-002')
-        response = model.generate_content(
-            [prompt, img],
-            generation_config=genai.GenerationConfig(
-                response_mime_type="application/json",
-                response_schema=HocBaData,
-            )
+       response = client.models.generate_content(
+            model='gemini-1.5-flash-002',
+            contents=[prompt, img],
+            config={
+                'response_mime_type': 'application/json',
+                'response_schema': HocBaData,
+            },
         )
 
         data = json.loads(response.text)
