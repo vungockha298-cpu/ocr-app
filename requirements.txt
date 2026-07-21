@@ -3,7 +3,7 @@ Flask-SQLAlchemy
 flask-cors
 Pillow
 pydantic
-google-generativeai
+google-genai
 gunicorn
 
 
