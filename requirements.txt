@@ -5,5 +5,5 @@ Pillow
 pydantic
 google-generativeai
 gunicorn
-pyodbc
+
 
