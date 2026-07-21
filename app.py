@@ -6,7 +6,7 @@ import os
 from flask import Flask, jsonify, render_template, request
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
-import google.generativeai as genai
+from google import genai
 import PIL.Image
 from pydantic import BaseModel
 
@@ -28,10 +28,8 @@ db = SQLAlchemy(app)
 # =========================
 # GEMINI API CLIENT INITIALIZATION
 # =========================
-from google import genai
-
-# Khai báo biến client chuẩn cho thư viện google-genai
 client = genai.Client()
+
 
 # =========================
 # DATABASE MODEL
@@ -114,8 +112,8 @@ def scan():
         Trường 'noi_dung_day_du' phải chứa toàn bộ khối văn bản thô đọc được trên ảnh.
         """
 
-       response = client.models.generate_content(
-            model='gemini-1.5-flash-002',
+        response = client.models.generate_content(
+            model='gemini-1.5-flash',
             contents=[prompt, img],
             config={
                 'response_mime_type': 'application/json',
