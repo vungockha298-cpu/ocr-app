@@ -18,7 +18,6 @@ CORS(app)
 # =========================
 ALLOWED = {'png', 'jpg', 'jpeg', 'webp', 'gif'}
 
-# Sử dụng SQLite để chạy mượt mà trên Render
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get(
     'DATABASE_URL', 'sqlite:///local_data.db'
 )
@@ -29,7 +28,6 @@ db = SQLAlchemy(app)
 # =========================
 # GEMINI API CLIENT INITIALIZATION
 # =========================
-# Khởi tạo SDK google-generativeai chuẩn, tự động lấy GEMINI_API_KEY từ Render
 genai.configure(api_key=os.environ.get("GEMINI_API_KEY"))
 
 
@@ -114,8 +112,8 @@ def scan():
         Trường 'noi_dung_day_du' phải chứa toàn bộ khối văn bản thô đọc được trên ảnh.
         """
 
-        # Đổi quay lại gemini-2.0-flash
-       model = genai.GenerativeModel('gemini-1.5-flash')
+        # Sử dụng model gemini-1.5-flash
+        model = genai.GenerativeModel('gemini-1.5-flash')
         response = model.generate_content(
             [prompt, img],
             generation_config=genai.GenerationConfig(
@@ -130,6 +128,7 @@ def scan():
 
     except Exception as e:
         return jsonify({'success': False, 'error': f'Loi Gemini API: {str(e)}'}), 500
+
 
 @app.route('/save', methods=['POST'])
 def save():
