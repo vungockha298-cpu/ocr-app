@@ -26,7 +26,7 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 # =========================
-# GEMINI API CLIENT INITIALIZATION
+# GEMINI API CLIENT INITIALIZATIONx
 # =========================
 client = genai.Client()
 
