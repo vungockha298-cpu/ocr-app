@@ -115,8 +115,8 @@ def scan():
         """
 
     # Gọi API Gemini với tên model chuẩn và client đọc từ GEMINI_API_KEY
-    response = client.models.generate_content(
-    model='models/gemini-1.5-flash',
+   response = client.models.generate_content(
+    model='gemini-2.0-flash', # Bỏ hẳn 'models/' đằng trước
     contents=[prompt, img],
     config={
         'response_mime_type': 'application/json',
