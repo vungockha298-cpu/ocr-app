@@ -114,8 +114,8 @@ def scan():
         Trường 'noi_dung_day_du' phải chứa toàn bộ khối văn bản thô đọc được trên ảnh.
         """
 
-        # Đổi thành gemini-1.5-flash-002
-        model = genai.GenerativeModel('gemini-1.5-flash-002')
+        # Đổi quay lại gemini-2.0-flash
+        model = genai.GenerativeModel('gemini-2.0-flash')
         response = model.generate_content(
             [prompt, img],
             generation_config=genai.GenerationConfig(
