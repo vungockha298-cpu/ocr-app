@@ -103,30 +103,30 @@ def scan():
   if not allowed_file(file.filename):
     return jsonify({'error': 'Dinh dang khong ho tro'}), 400
 
-  try:
-    img_bytes = file.read()
-    img = PIL.Image.open(io.BytesIO(img_bytes))
+ try:
+        img_bytes = file.read()
+        img = PIL.Image.open(io.BytesIO(img_bytes))
 
-    prompt = """
+        prompt = """
         Đây là ảnh học bạ hoặc giấy tờ cá nhân.
         Hãy OCR và trích xuất dữ liệu theo đúng schema JSON được cung cấp.
         Nếu trường nào không xuất hiện thông tin trong ảnh thì để chuỗi rỗng "".
         Trường 'noi_dung_day_du' phải chứa toàn bộ khối văn bản thô đọc được trên ảnh.
         """
 
-    # Gọi API Gemini với tên model chuẩn và client đọc từ GEMINI_API_KEY
-   response = client.models.generate_content(
-    model='gemini-2.0-flash', # Bỏ hẳn 'models/' đằng trước
-    contents=[prompt, img],
-    config={
-        'response_mime_type': 'application/json',
-        'response_schema': HocBaData,
-    },
-    )
+        # Thêm 4 khoảng trắng đằng trước dòng dưới này:
+        response = client.models.generate_content(
+            model='gemini-2.0-flash',
+            contents=[prompt, img],
+            config={
+                'response_mime_type': 'application/json',
+                'response_schema': HocBaData,
+            },
+        )
 
-    data = json.loads(response.text)
+        data = json.loads(response.text)
 
-    return jsonify({'success': True, 'data': data})
+        return jsonify({'success': True, 'data': data})
 
   except Exception as e:
     return jsonify({'success': False, 'error': f'Loi Gemini API: {str(e)}'}), 500
