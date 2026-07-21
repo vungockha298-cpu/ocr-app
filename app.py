@@ -112,7 +112,7 @@ def scan():
         Trường 'noi_dung_day_du' phải chứa toàn bộ khối văn bản thô đọc được trên ảnh.
         """
 
-       response = client.models.generate_content(
+        response = client.models.generate_content(
             model='gemini-1.5-flash-002',
             contents=[prompt, img],
             config={
